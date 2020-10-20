@@ -271,6 +271,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -635,13 +642,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return category_name;
     },
     downloadFile: function downloadFile(exampaper) {
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('/api/download/' + exampaper, {
-        responseType: 'arraybuffer'
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("/api/download/" + exampaper, {
+        responseType: "arraybuffer"
       }).then(function (res) {
         var blob = new Blob([res.data], {
-          type: 'application/*'
+          type: "application/*"
         });
-        var link = document.createElement('a');
+        var link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
         link.download = exampaper;
         link.click();
@@ -738,7 +745,11 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(exampaper.year))]),
                           _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(exampaper.paper))]),
+                          _c("td", [
+                            _c("a", { attrs: { href: "/get-download/" } }, [
+                              _vm._v(" " + _vm._s(exampaper.paper) + " ")
+                            ])
+                          ]),
                           _vm._v(" "),
                           _c("td", [
                             _c(

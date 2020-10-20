@@ -35,6 +35,45 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    //Roles and Permissions
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'users_roles');
+    }
+
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class, 'users_permissions');
+    }
+
+    public function hasRole(...$roles)
+    {
+        return $this->roles()->whereIn('slug', $roles)->count();
+    }
+
+    public function hasPermissionTo(...$permissions)
+    {
+        return $this->permissions()->whereIn('slug', $permissions)->count() ||
+        $this->roles()->whereHas('permissions', function ($q) use ($permissions) {
+            $q->whereIn('slug', $permissions);
+        })->count();
+    }
+
+    public function givePermissionTo(...$permissions)
+    {
+        $this->permissions()->attach($permissions);
+    }
+
+    public function setPermissions(...$permissions)
+    {
+        $this->permissions()->sync($permissions);
+    }
+
+    public function detachPermissions(...$permissions)
+    {
+        $this->permissions()->detach($permissions);
+    }
+
     /**
      * The attributes that should be cast to native types.
      *

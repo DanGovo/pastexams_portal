@@ -45,7 +45,9 @@
                       <td>{{ findCourse(exampaper.course_id) }}</td>
                       <td>{{ exampaper.name }}</td>
                       <td>{{ exampaper.year }}</td>
-                      <td>{{ exampaper.paper }}</td>
+                      <td>
+                        <a href="/get-download/"> {{ exampaper.paper }} </a>
+                      </td>
                       <td>
                         <button
                           class="btn btn-primary btn-sm"
@@ -61,8 +63,10 @@
                           <span class="fa fa-trash"></span>
                           Delete
                         </button>
-                        <button class="btn btn-success btn-sm"
-                        @click="downloadFile">
+                        <button
+                          class="btn btn-success btn-sm"
+                          @click="downloadFile"
+                        >
                           <span class="fa fa-download"></span>
                           Download
                         </button>
@@ -76,7 +80,10 @@
         </div>
         <b-modal ref="newExampaperModal" hide-footer title="Add Exam Paper">
           <div class="d-block">
-            <form v-on:submit.prevent="createExampaper" enctype="multipart/form-data">
+            <form
+              v-on:submit.prevent="createExampaper"
+              enctype="multipart/form-data"
+            >
               <div class="form-group">
                 <label for="category_id">Category</label>
                 <select
@@ -245,7 +252,7 @@
 
 <script>
 import * as exampaperService from "../services/exampaper_service.js";
-import axios from 'axios';
+import axios from "axios";
 export default {
   name: "exampaper",
   data() {
@@ -447,15 +454,17 @@ export default {
       });
       return category_name;
     },
-    downloadFile(exampaper){
-      axios.get('/api/download/'+exampaper, {responseType: 'arraybuffer'}).then(res=>{
-        let blob = new Blob([res.data], {type:'application/*'})
-        let link = document.createElement('a')
-        link.href = window.URL.createObjectURL(blob)
-        link.download = exampaper
-        link.click();
-      })
-    }
+    downloadFile(exampaper) {
+      axios
+        .get("/api/download/" + exampaper, { responseType: "arraybuffer" })
+        .then((res) => {
+          let blob = new Blob([res.data], { type: "application/*" });
+          let link = document.createElement("a");
+          link.href = window.URL.createObjectURL(blob);
+          link.download = exampaper;
+          link.click();
+        });
+    },
     // getDownload: async function(){
     //     return Storage(downlod(exampaper.paper));
     // }
